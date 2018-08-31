@@ -3,6 +3,8 @@ all:
 	@./newton_exec
 	@gcc -o secantes_exec secantes.c
 	@./secantes_exec
+	@gcc -o bissecao_exec bissecao.c
+	@./bissecao_exec
 
 newton:
 	@gcc -o newton_exec newton.c
