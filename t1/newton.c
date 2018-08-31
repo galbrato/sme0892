@@ -21,22 +21,26 @@ double f(double x){
 }
 
 double newton(double a, double b, double raiz){
-	FILE *p = fopen("newton_saida<n>.dat", "a+");
+	char* filename = calloc(100, sizeof(char));
+	sprintf(filename, "newton_saida[%1.1f_%1.1f].dat\0", a, b);
+	FILE *p = fopen(filename, "w+");
+	free(filename); 
 	double x = (a + b)/2;
-
-	double raiz_df = -1.0870;
-
-	// Verifica a condição para aplicar o método
-	if(raiz_df >= a && raiz_df <= b){
-		fprintf(p, "Não é possível utilizar o método de Newton no intervalo [%lf, %lf].\n", a, b);
-		return 0;
-	}
 
 	int k;
 	double erro = fabs(x - raiz);
 	for (k = 0; erro > ZERO || k<10; k++){
 		fprintf(p,"\t%d\t%2.8lf\t%2.8lf\t%2.8lf\t%2.8lf\n", k, x, f(x), df(x), erro);
-
+		if(fabs(df(x)) < ZERO){
+			fprintf(p,"ERRO! divisão por ZERO, derivada da função assumiu valor zero");
+			fclose(p);
+			return 0;
+		}
+		if(a>x || x>b){
+			fprintf(p,"ERRO! x convergiu para fora do intervalo");
+			fclose(p);
+			return 0;
+		}
 		x -= (f(x)/df(x));
 
 		//calculando o erro
@@ -47,9 +51,6 @@ double newton(double a, double b, double raiz){
 }
 
 int main (int argc, char** argv){
-	FILE *p = fopen("newton_saida<n>.dat", "w+");
-
-	fclose(p);
 	newton(-2.0f,0.0f,-(5.0f/3.0f));
 	newton(0.0f,2.0f, (2.0f/7.0f));
 

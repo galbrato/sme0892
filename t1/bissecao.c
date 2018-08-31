@@ -18,7 +18,10 @@ double f(double x){
 }
 
 double bissecao(double a, double b, double raiz){
-	FILE *p = fopen("bissecao_saida<n>.dat", "a+");
+	char* filename = calloc(100, sizeof(char));
+	sprintf(filename, "bissecao_saida[%1.1f_%1.1f].dat\0", a, b);
+	FILE *p = fopen(filename, "w+");
+	free(filename); 
 	double x = (a + b)/2;
 	int k;
 	double erro = fabs(x - raiz);
@@ -42,9 +45,6 @@ double bissecao(double a, double b, double raiz){
 }
 
 int main (int argc, char** argv){
-	FILE *p = fopen("bissecao_saida<n>.dat", "w+");
-
-	fclose(p);
 	bissecao(-2.0f,0.0f,-(5.0f/3.0f));
 	bissecao(0.0f,2.0f, (2.0f/7.0f));
 

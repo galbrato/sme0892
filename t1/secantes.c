@@ -18,7 +18,11 @@ double f(double x){
 }
 
 double secantes(double a, double b, double raiz){
-	FILE *p = fopen("secantes_saida<n>.dat", "a+");
+	char* filename = calloc(100, sizeof(char));
+	sprintf(filename, "secantes_saida[%1.1f_%1.1f].dat\0", a, b);
+	FILE *p = fopen(filename, "w+");
+	free(filename); 
+	
 	int k;
 	double x, x_2, x_1, erro;
 
@@ -33,9 +37,20 @@ double secantes(double a, double b, double raiz){
 
 	for (k = 2; erro > ZERO; k++){
 
+		if(fabs(f(x_1)-f(x_2)) < ZERO){
+			fprintf(p,"ERRO! divisão por ZERO, derivada da função assumiu valor zero");
+			fclose(p);
+			return 0;
+		}
+		if(a>x || x>b){
+			fprintf(p,"ERRO! x convergiu para fora do intervalo");
+			fclose(p);
+			return 0;
+		}
+
+
 		x = (f(x_1)*x_2-f(x_2)*x_1)/(f(x_1)-f(x_2));
 		erro = fabs(x - raiz);
-
 		fprintf(p,"\t%d\t%2.8lf\t%2.8lf\t%2.8lf\n", k, x, f(x), erro);
 
 		if(f(x) == 0)
@@ -51,9 +66,6 @@ double secantes(double a, double b, double raiz){
 }
 
 int main (int argc, char** argv){
-	FILE *p = fopen("secantes_saida<n>.dat", "w+");
-
-	fclose(p);
 	secantes(-2.0f,0.0f,-(5.0f/3.0f));
 	secantes(0.0f,2.0f, (2.0f/7.0f));
 
