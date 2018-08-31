@@ -23,11 +23,20 @@ double f(double x){
 double newton(double a, double b, double raiz){
 	FILE *p = fopen("newton_saida<n>.dat", "a+");
 	double x = (a + b)/2;
+
+	double raiz_df = -1.0870;
+
+	// Verifica a condição para aplicar o método
+	if(raiz_df >= a && raiz_df <= b){
+		fprintf(p, "Não é possível utilizar o método de Newton no intervalo [%lf, %lf].\n", a, b);
+		return 0;
+	}
+
 	int k;
 	double erro = fabs(x - raiz);
-	for (k = 0; erro > ZERO; k++){
+	for (k = 0; erro > ZERO || k<10; k++){
 		fprintf(p,"\t%d\t%2.8lf\t%2.8lf\t%2.8lf\t%2.8lf\n", k, x, f(x), df(x), erro);
-		
+
 		x -= (f(x)/df(x));
 
 		//calculando o erro

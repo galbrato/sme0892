@@ -18,7 +18,7 @@ double f(double x){
 }
 
 double bissecao(double a, double b, double raiz){
-	FILE *p = fopen("bissecaon_saida<n>.dat", "a+");
+	FILE *p = fopen("bissecan_saida<n>.dat", "a+");
 	double x = (a + b)/2;
 	int k;
 	double erro = fabs(x - raiz);
@@ -42,7 +42,7 @@ double bissecao(double a, double b, double raiz){
 }
 
 int main (int argc, char** argv){
-	FILE *p = fopen("bissecaon_saida<n>.dat", "w+");
+	FILE *p = fopen("bissecao_saida<n>.dat", "w+");
 
 	fclose(p);
 	bissecao(-2.0f,0.0f,-(5.0f/3.0f));
